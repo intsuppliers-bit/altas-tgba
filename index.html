@@ -45,7 +45,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;font-
 .prog-step.active+.prog-line{background:var(--or)}
 
 /* ── MAIN ── */
-.main{max-width:820px;margin:0 auto;padding:28px 20px 80px}
+.main{max-width:820px;margin:0 auto;padding:28px 20px 100px}
 .step-panel{display:none;animation:fadeUp .3s ease}
 .step-panel.active{display:block}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -134,7 +134,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;font-
 .success-screen p{font-size:14px;color:var(--gray);max-width:480px;margin:0 auto}
 .success-ref{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:16px;color:var(--or);margin-top:16px;letter-spacing:1px}
 
-.site-footer{background:var(--black);color:#444;text-align:center;padding:16px 20px;font-size:11px;letter-spacing:.3px}
+.site-footer{background:var(--black);color:#444;text-align:center;padding:16px 20px;font-size:11px;letter-spacing:.3px;position:fixed;bottom:0;left:0;right:0;z-index:100}
 
 @media(max-width:600px){
   .grid-2,.grid-3{grid-template-columns:1fr}
@@ -573,7 +573,91 @@ function showStep(n) {
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
+function validateStep(step) {
+  const required = {
+    1: ['razon_social','cuit','direccion','cp','localidad_provincia'],
+    2: ['contacto_ref','email'],
+    3: [], // radios validated separately
+    4: ['titular_banco','banco','cbu'],
+    5: []
+  };
+
+  // Radio groups required per step
+  const requiredRadios = {
+    1: ['tipo_facturacion'],
+    2: [],
+    3: ['iva','ganancias','iibb'],
+    4: [],
+    5: []
+  };
+
+  let valid = true;
+
+  // Clear previous errors
+  document.querySelectorAll('.field-error').forEach(el => el.remove());
+  document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+
+  // Text/select fields
+  (required[step] || []).forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (!el.value.trim()) {
+      el.classList.add('input-error');
+      el.style.borderColor = 'var(--error)';
+      el.style.boxShadow = '0 0 0 3px rgba(229,57,53,.1)';
+      el.addEventListener('input', () => {
+        el.style.borderColor = '';
+        el.style.boxShadow = '';
+      }, {once: true});
+      valid = false;
+    }
+  });
+
+  // Radio groups
+  (requiredRadios[step] || []).forEach(name => {
+    const checked = document.querySelector(`input[name="${name}"]:checked`);
+    if (!checked) {
+      const group = document.querySelector(`input[name="${name}"]`);
+      if (group) {
+        const container = group.closest('.radio-group');
+        if (container) {
+          container.style.outline = '2px solid var(--error)';
+          container.style.borderRadius = '6px';
+          container.style.padding = '4px';
+          setTimeout(() => {
+            container.style.outline = '';
+            container.style.padding = '';
+          }, 2000);
+        }
+      }
+      valid = false;
+    }
+  });
+
+  // Banco "Otro" — require text if selected
+  if (step === 4) {
+    const banco = document.getElementById('banco');
+    if (banco && banco.value === 'Otro') {
+      const otroBanco = document.getElementById('banco_otro');
+      if (otroBanco && !otroBanco.value.trim()) {
+        otroBanco.style.borderColor = 'var(--error)';
+        otroBanco.style.boxShadow = '0 0 0 3px rgba(229,57,53,.1)';
+        valid = false;
+      }
+    }
+  }
+
+  if (!valid) {
+    // Scroll to first error
+    const firstErr = document.querySelector('.input-error') || document.querySelector('[style*="border-color: var(--error)"]');
+    if (firstErr) firstErr.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+
+  return valid;
+}
+
 function nextStep(from) {
+  if (!validateStep(currentStep)) return;
   if (currentStep < TOTAL_STEPS) {
     currentStep++;
     showStep(currentStep);
