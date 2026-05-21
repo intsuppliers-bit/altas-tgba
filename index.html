@@ -77,6 +77,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;font-
 .field select option{background:#fff;color:var(--ink)}
 .field textarea{resize:vertical;min-height:80px}
 .hint{font-size:11px;color:var(--lgray);margin-top:-2px}
+.req{color:var(--or);margin-left:2px;font-size:12px}
 
 /* ── RADIO ── */
 .radio-group{display:flex;gap:8px;flex-wrap:wrap}
@@ -134,6 +135,8 @@ body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;font-
 .success-screen p{font-size:14px;color:var(--gray);max-width:480px;margin:0 auto}
 .success-ref{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:16px;color:var(--or);margin-top:16px;letter-spacing:1px}
 
+.toast{position:fixed;bottom:60px;left:50%;transform:translateX(-50%) translateY(20px);background:#1A1A1A;color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.5px;padding:12px 20px;border-radius:6px;border-left:3px solid var(--error);box-shadow:0 4px 20px rgba(0,0,0,.3);opacity:0;transition:all .3s ease;pointer-events:none;z-index:999;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .site-footer{background:var(--black);color:#444;text-align:center;padding:16px 20px;font-size:11px;letter-spacing:.3px;position:fixed;bottom:0;left:0;right:0;z-index:100}
 
 @media(max-width:600px){
@@ -216,15 +219,15 @@ body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;font-
       <div class="card-title">Identificación</div>
       <div class="grid-2">
         <div class="field col-2">
-          <label>Razón Social</label>
+          <label>Razón Social <span class="req">*</span></label>
           <input type="text" id="razon_social" placeholder="Ej: Empresa S.A.">
         </div>
         <div class="field col-2">
-          <label>CUIT</label>
+          <label>CUIT <span class="req">*</span></label>
           <input type="text" id="cuit" placeholder="XX-XXXXXXXX-X" maxlength="13">
         </div>
         <div class="field col-2">
-          <label>Tipo de Facturación</label>
+          <label>Tipo de Facturación <span class="req">*</span></label>
           <div class="radio-group" style="margin-top:4px">
             <div class="radio-opt"><input type="radio" name="tipo_facturacion" id="fac_mensual" value="Mensual" onchange="toggleOtroFac()"><label for="fac_mensual">Mensual</label></div>
             <div class="radio-opt"><input type="radio" name="tipo_facturacion" id="fac_unica" value="Prestación Única" onchange="toggleOtroFac()"><label for="fac_unica">Prestación Única</label></div>
@@ -241,15 +244,15 @@ body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;font-
       <div class="card-title">Domicilio</div>
       <div class="grid-2">
         <div class="field col-2">
-          <label>Dirección</label>
+          <label>Dirección <span class="req">*</span></label>
           <input type="text" id="direccion" placeholder="Calle, número, piso, depto">
         </div>
         <div class="field">
-          <label>Código Postal</label>
+          <label>Código Postal <span class="req">*</span></label>
           <input type="text" id="cp" placeholder="Ej: 1425" maxlength="8">
         </div>
         <div class="field">
-          <label>Localidad y Provincia</label>
+          <label>Localidad y Provincia <span class="req">*</span></label>
           <input type="text" id="localidad_provincia" placeholder="Ej: CABA, Buenos Aires">
         </div>
       </div>
@@ -278,7 +281,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;font-
       <div class="card-title">Referencia en BetWarrior / Track Gaming</div>
       <div class="grid-2">
         <div class="field col-2">
-          <label>Contacto de Referencia / Área Responsable en BetWarrior</label>
+          <label>Contacto de Referencia / Área Responsable en BetWarrior <span class="req">*</span></label>
           <input type="text" id="contacto_ref" placeholder="Nombre completo o área">
         </div>
         <div class="field">
@@ -287,7 +290,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;font-
           <span class="hint">Teléfono directo de la persona contratada / responsable</span>
         </div>
         <div class="field">
-          <label>E-mail de la persona contratada</label>
+          <label>E-mail de la persona contratada <span class="req">*</span></label>
           <input type="email" id="email" placeholder="proveedor@empresa.com">
           <span class="hint">E-mail directo de la persona contratada / responsable</span>
         </div>
@@ -316,7 +319,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;font-
     <div class="card">
       <div class="card-title">IVA — Impuesto al Valor Agregado</div>
       <div class="field">
-        <label>Condición frente al IVA</label>
+        <label>Condición frente al IVA <span class="req">*</span></label>
         <div class="radio-group" style="margin-top:6px">
           <div class="radio-opt"><input type="radio" name="iva" id="iva_inscripto" value="Responsable Inscripto"><label for="iva_inscripto">Responsable Inscripto</label></div>
           <div class="radio-opt"><input type="radio" name="iva" id="iva_mono" value="Monotributista"><label for="iva_mono">Monotributista</label></div>
@@ -331,7 +334,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;font-
     <div class="card">
       <div class="card-title">Ganancias — Impuesto a las Ganancias</div>
       <div class="field">
-        <label>Condición frente a Ganancias</label>
+        <label>Condición frente a Ganancias <span class="req">*</span></label>
         <div class="radio-group" style="margin-top:6px">
           <div class="radio-opt"><input type="radio" name="ganancias" id="gan_inscripto" value="Inscripto"><label for="gan_inscripto">Inscripto</label></div>
           <div class="radio-opt"><input type="radio" name="ganancias" id="gan_exento" value="Exento"><label for="gan_exento">Exento</label></div>
@@ -346,7 +349,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;font-
       <div class="card-title">IIBB — Ingresos Brutos</div>
       <div class="grid-2">
         <div class="field col-2">
-          <label>Condición frente a IIBB</label>
+          <label>Condición frente a IIBB <span class="req">*</span></label>
           <div class="radio-group" style="margin-top:6px">
             <div class="radio-opt"><input type="radio" name="iibb" id="iibb_local" value="Contribuyente Local"><label for="iibb_local">Contribuyente Local</label></div>
             <div class="radio-opt"><input type="radio" name="iibb" id="iibb_cm" value="Contrib. Conv. Multilateral"><label for="iibb_cm">Conv. Multilateral</label></div>
@@ -387,11 +390,11 @@ body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;font-
       <div class="card-title">Cuenta Bancaria</div>
       <div class="grid-2">
         <div class="field">
-          <label>Nombre del Titular</label>
+          <label>Nombre del Titular <span class="req">*</span></label>
           <input type="text" id="titular_banco" placeholder="Nombre completo o razón social">
         </div>
         <div class="field">
-          <label>Banco</label>
+          <label>Banco <span class="req">*</span></label>
           <select id="banco" onchange="toggleOtroBanco()">
             <option value="">Seleccionar banco…</option>
             <option>Banco Nación Argentina</option>
@@ -415,7 +418,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;font-
           </div>
         </div>
         <div class="field">
-          <label>CBU</label>
+          <label>CBU <span class="req">*</span></label>
           <input type="text" id="cbu" placeholder="22 dígitos" maxlength="22" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
         </div>
         <div class="field">
@@ -535,6 +538,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;font-
 
 </main>
 
+<div class="toast" id="toast"></div>
 <footer class="site-footer">
   Track Gaming Buenos Aires · Alta de Proveedores · Argentina
 </footer>
@@ -571,6 +575,13 @@ function showStep(n) {
   if (el) el.classList.add('active');
   updateProgress(n);
   window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
 }
 
 function validateStep(step) {
@@ -648,8 +659,8 @@ function validateStep(step) {
   }
 
   if (!valid) {
-    // Scroll to first error
-    const firstErr = document.querySelector('.input-error') || document.querySelector('[style*="border-color: var(--error)"]');
+    showToast('⚠ Completá los campos obligatorios para continuar');
+    const firstErr = document.querySelector('[style*="border-color"]');
     if (firstErr) firstErr.scrollIntoView({behavior:'smooth', block:'center'});
   }
 
