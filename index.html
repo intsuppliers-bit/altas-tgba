@@ -448,12 +448,12 @@ body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;font-
     </div>
 
     <div class="card">
-      <div class="card-title">Documentos</div>
+      <div class="card-title">Documentos Obligatorios</div>
 
       <!-- ARCA -->
       <div style="margin-bottom:18px">
         <div class="field" style="margin-bottom:6px">
-          <label>Constancia de Inscripción ARCA (ex AFIP)</label>
+          <label>Constancia de Inscripción ARCA (ex AFIP) <span class="req">*</span></label>
         </div>
         <div class="file-upload-area">
           <label class="file-upload-label">
@@ -471,7 +471,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;font-
       <!-- CBU -->
       <div style="margin-bottom:18px">
         <div class="field" style="margin-bottom:6px">
-          <label>Constancia de CBU</label>
+          <label>Constancia de CBU <span class="req">*</span></label>
         </div>
         <div class="file-upload-area">
           <label class="file-upload-label">
@@ -489,7 +489,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Barlow',sans-serif;font-
       <!-- IIBB -->
       <div style="margin-bottom:18px">
         <div class="field" style="margin-bottom:6px">
-          <label>Constancia de Ingresos Brutos o Padrón WEB actualizado</label>
+          <label>Constancia de Ingresos Brutos o Padrón WEB actualizado <span class="req">*</span></label>
           <span class="hint">Si está inscripto en Convenio Multilateral, adjuntar Constancia de Padrón WEB</span>
         </div>
         <div class="file-upload-area">
@@ -593,6 +593,30 @@ function validateStep(step) {
     5: []
   };
 
+  // File validation for step 5
+  if (step === 5) {
+    const requiredFiles = [
+      {id: 'file_arca', label: 'Constancia ARCA'},
+      {id: 'file_cbu', label: 'Constancia CBU'},
+      {id: 'file_iibb', label: 'Constancia IIBB / Padrón WEB'}
+    ];
+    requiredFiles.forEach(({id, label}) => {
+      const input = document.getElementById(id);
+      const listId = 'list_' + id.replace('file_', '');
+      const list = document.getElementById(listId);
+      const hasFiles = (input && input.files && input.files.length > 0) || (list && list.children.length > 0);
+      if (!hasFiles) {
+        const area = input ? input.closest('.file-upload-area') : null;
+        if (area) {
+          area.style.borderColor = 'var(--error)';
+          area.style.background = '#FFF0F0';
+          setTimeout(() => { area.style.borderColor = ''; area.style.background = ''; }, 3000);
+        }
+        valid = false;
+      }
+    });
+  }
+
   // Radio groups required per step
   const requiredRadios = {
     1: ['tipo_facturacion'],
@@ -601,6 +625,30 @@ function validateStep(step) {
     4: [],
     5: []
   };
+
+  // File validation for step 5
+  if (step === 5) {
+    const requiredFiles = [
+      {id: 'file_arca', label: 'Constancia ARCA'},
+      {id: 'file_cbu', label: 'Constancia CBU'},
+      {id: 'file_iibb', label: 'Constancia IIBB / Padrón WEB'}
+    ];
+    requiredFiles.forEach(({id, label}) => {
+      const input = document.getElementById(id);
+      const listId = 'list_' + id.replace('file_', '');
+      const list = document.getElementById(listId);
+      const hasFiles = (input && input.files && input.files.length > 0) || (list && list.children.length > 0);
+      if (!hasFiles) {
+        const area = input ? input.closest('.file-upload-area') : null;
+        if (area) {
+          area.style.borderColor = 'var(--error)';
+          area.style.background = '#FFF0F0';
+          setTimeout(() => { area.style.borderColor = ''; area.style.background = ''; }, 3000);
+        }
+        valid = false;
+      }
+    });
+  }
 
   let valid = true;
 
